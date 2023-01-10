@@ -26,9 +26,9 @@ public class MemberHandler {
     m.setPostNo(Prompt.inputString("우편번호? "));
     m.setBasicAddress(Prompt.inputString("주소1? "));
     m.setDetailAddress(Prompt.inputString("주소2? "));
-    m.setWorking(Prompt.inputInt("0. 미취업\n1. 재직중\n재직자? ") == 1);
-    m.setGender(Prompt.inputInt("0. 남자\n1. 여자\n성별? ") == 0 ? 'M' : 'W');
-    m.setLevel((byte) Prompt.inputInt("0. 비전공자\n1. 준전공자\n2. 전공자\n전공? "));
+//    m.setWorking(Prompt.inputInt("0. 미취업\n1. 재직중\n재직자? ") == 1);
+//    m.setGender(Prompt.inputInt("0. 남자\n1. 여자\n성별? ") == 0 ? 'M' : 'W');
+//    m.setLevel((byte) Prompt.inputInt("0. 비전공자\n1. 준전공자\n2. 전공자\n전공? "));
     m.setCreatedDate(new Date(System.currentTimeMillis()).toString());
 
     this.memberDao.insert(m);

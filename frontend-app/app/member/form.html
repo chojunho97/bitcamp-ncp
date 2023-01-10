@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+    <h1>회원 관리</h1>
+    <form>
+    <table border="1">
+        <tbody>
+                <th>이름</th>
+                <td><input type="name" name="name" id="f-name"></td>
+            <tr>
+                <th>전화번호</th>
+                <td><input type="tel" name="tel" id="f-tel"></td>
+            </tr>
+            <tr>
+                <th>우편번호</th>
+                <td><input type="postNo" name="postNo" id="f-postNo"></td>
+            </tr>
+            <tr>
+                <th>기본주소</th>
+                <td><input type="basicAddress" name="basicAddress" id="f-basicAddress"></td>
+            </tr>
+            <tr>
+                <th>상세주소</th>
+                <td><input type="detailAddress" name="detailAddress" id="f-detailAddress"></td>
+            </tr>
+            <!-- <tr>
+                <th>재직여부</th>
+                <td><input type="working" name="working" id="f-working"></td>
+            </tr>
+            <tr>
+                <th>성별</th>
+                <td><input type="gender" name="gender" id="f-gender"></td>
+            </tr>
+            <tr>
+                <th>전공여부</th>
+                <td><input type="level" name="level" id="f-level"></td>
+            </tr> -->
+            <tr>
+                <th>작성일</th>
+                <td><input type="createdDate" name="createdDate" id="f-createdDate"></td>
+            </tr>
+        </tbody>
+    </table>
+    <button id="add-btn" type="button">등록</button>
+    <button id="cancel-btn" type="button">취소</button>
+</form>
+    <script>
+        document.querySelector('#add-btn').onclick = (e) => {
+            var name = encodeURIComponent(document.querySelector('#f-name').value);
+            var tel = encodeURIComponent(document.querySelector('#f-tel').value);
+            var postNo = encodeURIComponent(document.querySelector('#f-postNo').value);
+            var basicAddress = encodeURIComponent(document.querySelector('#f-basicAddress').value);
+            var detailAddress = encodeURIComponent(document.querySelector('#f-detailAddress').value);
+            var createdDate = encodeURIComponent(document.querySelector('#f-createdDate').value);
+            // var working = encodeURIComponent(document.querySelector('#f-working').value);
+            // var gender = encodeURIComponent(document.querySelector('#f-gender').value);
+            // var level = encodeURIComponent(document.querySelector('#f-level').value);
+            
+           // console.log(`title=${title}&content=${content}&password=${password}`);
+            fetch("http://localhost:8080/members", {
+                method: 'POST',
+                headers: {
+                    'Content-type':'application/x-www-form-urlencoded'
+                },
+                body: `name=${name}&tel=${tel}&postNo=${postNo}&basicAddress=${basicAddress}&detailAddress=${detailAddress}&createdDate=${createdDate}`
+            })
+            .then((response) => {return response.json();})
+            .then((obj) => {
+                location.href = "list.html";
+            })
+            .catch((err) => {
+              alert("서버 요청 오류 발생!");
+              console.log(err);
+            });
+        };
+        document.querySelector('#cancel-btn').onclick = (e) => {
+            location.href = "list.html";
+        };
+    </script>
+</body>
+</html>
