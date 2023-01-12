@@ -7,8 +7,8 @@
   <title>Document</title>
 </head>
 <body>
-<h1>회원</h1>
-<a href="form.html">새 회원</a>
+<h1>학생</h1>
+<a href="form.html">새 학생</a>
 <table border="1">
   <thead>
     <tr>
@@ -35,7 +35,7 @@ function getLevelTitle(level) {
   }
 }
 
-fetch('http://localhost:8080/members')
+fetch('http://localhost:8080/students')
   .then((response) => {return response.json();})
   .then((obj) => {
     var html = '';
