@@ -1,10 +1,7 @@
-package bitcamp.bootapp.vo;
-
-import bitcamp.myapp.vo.Member;
+package bitcamp.myapp.vo;
 
 // 회원 데이터를 담을 메모리를 설계한다.
 public class Student extends Member {
-  // Student 클래스는 Member 클래스의 코드를 사용할 수 있다.
   private String postNo;
   private String basicAddress;
   private String detailAddress;

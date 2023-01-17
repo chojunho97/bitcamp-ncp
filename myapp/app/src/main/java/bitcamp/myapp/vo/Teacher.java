@@ -1,9 +1,6 @@
-package bitcamp.bootapp.vo;
-
-import bitcamp.myapp.vo.Member;
+package bitcamp.myapp.vo;
 
 public class Teacher extends Member {
-
   private String email;
   private int degree;
   private String school;
@@ -40,4 +37,5 @@ public class Teacher extends Member {
   public void setWage(int wage) {
     this.wage = wage;
   }
+
 }
