@@ -3,7 +3,7 @@ package com.eomcs.basic.ex01;
 
 
 
-//클래스를 정의할 때 수퍼 클래스를 지정하지 않으면 
+//클래스를 정의할 때 수퍼 클래스를 지정하지 않으면
 //컴파일러는 자동으로 Object를 상속 받는다.
 public class Exam0110 /*extends Object*/ {
 
@@ -38,7 +38,7 @@ public class Exam0110 /*extends Object*/ {
 // 1) toString()
 //    => 클래스이름과 해시코드를 리턴한다.
 // 2) equals()
-//    => 같은 인스턴스인지 검사한다. 
+//    => 같은 인스턴스인지 검사한다.
 // 3) hashCode()
 //    => 인스턴스를 식별하는 값을 리턴한다.
 // 4) getClass()
@@ -47,7 +47,7 @@ public class Exam0110 /*extends Object*/ {
 //    => 인스턴스를 복제한 후 그 복제 인스턴스를 리턴한다.
 // 6) finalize()
 //    => 가비지 컬렉터에 의해 메모리에서 해제되기 직전에 호출된다.
-// 
+//
 
 
 
