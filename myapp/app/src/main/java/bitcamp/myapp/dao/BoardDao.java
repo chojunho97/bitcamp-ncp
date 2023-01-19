@@ -6,7 +6,7 @@ import bitcamp.myapp.vo.Board;
 public class BoardDao extends ObjectDao {
 
   // 가장 최근 게시글의 글 번호를 저장하는 필드
-  // 가장 최그 게시글이 삭제되더라도 그 값은 그대로 유지할 것이다.
+  // 가장 최근 게시글이 삭제되더라도 그 값은 그대로 유지할 것이다.
   int lastNo;
 
   // Board 객체를 게시글 번호를 찾는 메서드
@@ -14,21 +14,13 @@ public class BoardDao extends ObjectDao {
     Board b = new Board();
     b.setNo(no);
 
-    //    int index = this.indexOf(b);
-    //
-    //    if (index < 0) {
-    //      return null;
-    //    } else {
-    //      return (Board) this.get(index);
-    //    }
-
     return (Board) this.get(this.indexOf(b));
   }
 
   @Override // 컴파일러에게 오버라이딩을 제대로 했는지 검사해 달라고 표시함
   protected int indexOf(Object obj) {
     for (int i = 0; i < this.size(); i++) {
-      if (((Board)this.objects[i]).getNo() == ((Board)obj).getNo()) {
+      if (((Board) this.get(i)).getNo() == ((Board)obj).getNo()) {
         return i;
       }
     }
