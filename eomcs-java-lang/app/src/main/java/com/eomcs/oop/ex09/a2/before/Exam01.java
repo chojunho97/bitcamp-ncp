@@ -25,6 +25,7 @@ public class Exam01 {
     // ToolB 객체를 사용하려면 m2() 메서드를 호출해야 한다.
     tool.m2();
   }
+
 }
 
 
