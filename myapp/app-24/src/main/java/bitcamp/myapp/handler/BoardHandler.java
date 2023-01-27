@@ -1,8 +1,8 @@
 package bitcamp.myapp.handler;
 
-import java.util.LinkedList;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.vo.Board;
+import bitcamp.util.LinkedList;
 import bitcamp.util.Prompt;
 
 public class BoardHandler {

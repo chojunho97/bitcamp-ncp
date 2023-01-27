@@ -1,9 +1,9 @@
 package bitcamp.myapp.dao;
 
 import java.sql.Date;
-import java.util.Iterator;
-import java.util.List;
 import bitcamp.myapp.vo.Board;
+import bitcamp.util.Iterator;
+import bitcamp.util.List;
 
 public class BoardDao {
 
