@@ -7,11 +7,6 @@ public class Teacher extends Member {
   private String major;
   private int wage;
 
-  @Override
-  public String toString() {
-    return "Teacher [email=" + email + ", degree=" + degree + ", school=" + school + ", major="
-        + major + ", wage=" + wage + "]";
-  }
   public String getEmail() {
     return email;
   }
@@ -42,4 +37,5 @@ public class Teacher extends Member {
   public void setWage(int wage) {
     this.wage = wage;
   }
+
 }

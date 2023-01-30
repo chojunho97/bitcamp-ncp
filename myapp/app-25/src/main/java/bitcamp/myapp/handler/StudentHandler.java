@@ -148,9 +148,6 @@ public class StudentHandler {
   }
 
   public void service() {
-
-    memberDao.load("student.data");
-
     while (true) {
       System.out.printf("[%s]\n", this.title);
       System.out.println("1. 등록");
@@ -171,9 +168,7 @@ public class StudentHandler {
 
       try {
         switch (menuNo) {
-          case 0:
-            memberDao.save("student.data");
-            return;
+          case 0: return;
           case 1: this.inputMember(); break;
           case 2: this.printMembers(); break;
           case 3: this.printMember(); break;
