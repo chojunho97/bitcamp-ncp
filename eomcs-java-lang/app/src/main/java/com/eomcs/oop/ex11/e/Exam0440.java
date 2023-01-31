@@ -39,5 +39,11 @@ public class Exam0440 {
       }
     });
 
+    class Y implements A {
+      @Override
+      public void print() {
+        System.out.println("하하하");
+      }
+    }
   }
 }

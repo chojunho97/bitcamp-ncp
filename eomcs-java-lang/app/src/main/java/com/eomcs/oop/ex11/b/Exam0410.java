@@ -6,7 +6,8 @@ import com.eomcs.oop.ex11.b.sub.M;
 class D {
   static int v1;
 
-  static void m1() {}
+  static void m1() {
+  }
 
   static class X {
     void test() {

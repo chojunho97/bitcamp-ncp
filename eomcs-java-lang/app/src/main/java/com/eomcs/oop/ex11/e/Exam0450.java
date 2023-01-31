@@ -1,4 +1,4 @@
-// anonymous class - 익명 클래스가 놓이는 장소: 파라미터
+// anonymous class - 익명 클래스가 놓이는 장소: 리턴
 package com.eomcs.oop.ex11.e;
 
 class My {
@@ -16,8 +16,7 @@ public class Exam0450 {
   interface A {
     void print();
   }
-
-  static A create1() {
+  static A create0() {
     class X implements A {
       @Override
       public void print() {
@@ -27,6 +26,16 @@ public class Exam0450 {
     return new X();
   }
 
+  static A create1() {
+    A a = new A() {
+      @Override
+      public void print() {
+        System.out.println("Hello!");
+      }
+    };
+    return a;
+  }
+
   static A create2() {
     return new A() {
       @Override
@@ -34,6 +43,10 @@ public class Exam0450 {
         System.out.println("Hello2!");
       }
     };
+  }
+
+  static A create22() {
+    return () -> System.out.println("Hello2!");
   }
 
   static A create3() {
