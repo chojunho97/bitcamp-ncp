@@ -1,13 +1,13 @@
 package bitcamp.myapp.dao;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.sql.Date;
 import java.util.Iterator;
 import java.util.List;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import bitcamp.myapp.vo.Student;
 
 public class StudentDao {
@@ -57,28 +57,28 @@ public class StudentDao {
   }
 
   public void save(String filename) {
-    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
+    try (FileWriter out = new FileWriter(filename)) {
 
-      out.writeObject(list);
+      out.write(new Gson().toJson(list));
 
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void load(String filename) {
-    if (list.size() > 0) {
+    if (list.size() > 0) { // 중복 로딩 방지!
       return;
     }
 
-    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+    try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
+      TypeToken<List<Student>> collectionType = new TypeToken<>() {};
 
-      list = (List<Student>) in.readObject();
-      lastNo = list.get(list.size() - 1).getNo();
+      list = new Gson().fromJson(in, collectionType);
 
-    } catch (FileNotFoundException e) {
-      System.out.println("데이터 파일이 존재하지 않습니다!");
+      if (list.size() > 0) {
+        lastNo = list.get(list.size() - 1).getNo();
+      }
 
     } catch (Exception e) {
       e.printStackTrace();
