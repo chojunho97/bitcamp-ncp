@@ -15,7 +15,7 @@ eclipse {
 
     // => eclipse 프로젝트 이름 설정하기
     project {
-        name = "myapp-client"
+        name = "myapp-server"
     }
 
     // => eclipse IDE 설정하기
@@ -34,13 +34,10 @@ dependencies {
     implementation project(':app-common')
     implementation 'com.google.code.gson:gson:2.10.1'
     
-    // MariaDB JDBC 드라이버
-    implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.2'
-    
     implementation 'com.google.guava:guava:31.1-jre'
     testImplementation 'junit:junit:4.13.2'
 }
 
 application {
-    mainClass = 'bitcamp.myapp.ClientApp'
+    mainClass = 'bitcamp.myapp.ServerApp'
 }
