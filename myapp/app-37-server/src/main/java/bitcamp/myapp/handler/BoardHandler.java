@@ -1,6 +1,5 @@
 package bitcamp.myapp.handler;
 
-import java.util.List;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.vo.Board;
 import bitcamp.util.StreamTool;
@@ -27,7 +26,7 @@ public class BoardHandler {
   }
 
   private void printBoards(StreamTool streamTool) throws Exception {
-    List<Board> boards = this.boardDao.findAll();
+    Board[] boards = this.boardDao.findAll();
     streamTool.println("번호\t제목\t작성일\t조회수");
     for (Board b : boards) {
       streamTool.printf("%d\t%s\t%s\t%d\n",
@@ -112,7 +111,7 @@ public class BoardHandler {
       return;
     }
 
-    this.boardDao.delete(boardNo);
+    this.boardDao.delete(b);
 
     streamTool.println("삭제했습니다.").send();
 
@@ -121,7 +120,7 @@ public class BoardHandler {
   private void searchBoard(StreamTool streamTool) throws Exception {
     String keyword = streamTool.promptString("검색어? ");
 
-    List<Board> boards = this.boardDao.findByKeyword(keyword);
+    Board[] boards = this.boardDao.findByKeyword(keyword);
 
     streamTool.println("번호\t제목\t작성일\t조회수");
     for (Board b : boards) {
