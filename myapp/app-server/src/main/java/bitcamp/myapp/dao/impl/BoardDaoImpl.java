@@ -1,79 +1,61 @@
 package bitcamp.myapp.dao.impl;
 
-import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.dao.DaoException;
 import bitcamp.myapp.vo.Board;
+import bitcamp.util.ConnectionFactory;
 
 public class BoardDaoImpl implements BoardDao {
 
-  Connection con;
+  ConnectionFactory  conFactory;
+  SqlSessionFactory sqlSessionFactory;
 
-  // 의존객체 Connection 을 생성자에서 받는다.
-  public BoardDaoImpl(Connection con) {
-    this.con = con;
+  public BoardDaoImpl(SqlSessionFactory sqlSessionFactory) {
+    this.sqlSessionFactory = sqlSessionFactory;
   }
 
   @Override
   public void insert(Board b) {
-    try (Statement stmt = con.createStatement()) {
 
-      String sql = String.format("insert into app_board(title, content, pwd) values('%s', '%s', '%s')",
-          b.getTitle(), b.getContent(), b.getPassword());
-
-      stmt.executeUpdate(sql);
-
-    } catch (Exception e) {
-      throw new DaoException(e);
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      sqlSession.insert("BoardMapper.insert", b);
+      sqlSession.commit();
     }
   }
 
   @Override
   public List<Board> findAll() {
-    try (Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery(
-            "select board_id, title, created_date, view_cnt from app_board order by board_id desc")) {
-
-      ArrayList<Board> list = new ArrayList<>();
-      while (rs.next()) {
-        Board b = new Board();
-        b.setNo(rs.getInt("board_id"));
-        b.setTitle(rs.getString("title"));
-        b.setCreatedDate(rs.getString("created_date"));
-        b.setViewCount(rs.getInt("view_cnt"));
-
-        list.add(b);
-      }
-      return list;
-
-    } catch (Exception e) {
-      throw new DaoException(e);
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      return sqlSession.selectList("BoardMapper.findAll");
     }
   }
 
   @Override
   public Board findByNo(int no) {
-    try (Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery(
-            "select board_id, title, content, pwd, created_date, view_cnt from app_board where board_id=" + no)) {
+    try (PreparedStatement stmt = conFactory.getConnection().prepareStatement(
+        "select board_id, title, content, pwd, created_date, view_cnt from app_board where board_id=?")) {
 
-      if (rs.next()) {
-        Board b = new Board();
-        b.setNo(rs.getInt("board_id"));
-        b.setTitle(rs.getString("title"));
-        b.setContent(rs.getString("content"));
-        b.setPassword(rs.getString("pwd"));
-        b.setCreatedDate(rs.getString("created_date"));
-        b.setViewCount(rs.getInt("view_cnt"));
-        return b;
+      stmt.setInt(1, no);
+
+      try (ResultSet rs = stmt.executeQuery()) {
+        if (rs.next()) {
+          Board b = new Board();
+          b.setNo(rs.getInt("board_id"));
+          b.setTitle(rs.getString("title"));
+          b.setContent(rs.getString("content"));
+          b.setPassword(rs.getString("pwd"));
+          //b.setCreatedDate(rs.getString("created_date"));
+          b.setViewCount(rs.getInt("view_cnt"));
+          return b;
+        }
+        return null;
       }
-
-      return null;
-
     } catch (Exception e) {
       throw new DaoException(e);
     }
@@ -81,15 +63,15 @@ public class BoardDaoImpl implements BoardDao {
 
   @Override
   public void increaseViewCount(int no) {
-    try (Statement stmt = con.createStatement()) {
+    try (PreparedStatement stmt = conFactory.getConnection().prepareStatement(
+        "update app_board set"
+            + " view_cnt = view_cnt + 1"
+            + " where board_id=?")) {
 
-      String sql = String.format(
-          "update app_board set"
-              + " view_cnt = view_cnt + 1"
-              + " where board_id=%d",
-              no);
 
-      stmt.executeUpdate(sql);
+      stmt.setInt(1, no);
+
+      stmt.executeUpdate();
 
     } catch (Exception e) {
       throw new DaoException(e);
@@ -98,25 +80,30 @@ public class BoardDaoImpl implements BoardDao {
 
   @Override
   public List<Board> findByKeyword(String keyword) {
-    try (Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery(
-            "select board_id, title, created_date, view_cnt"
-                + " from app_board"
-                + " where title like('%" + keyword + "%')"
-                + " or content like('%" + keyword + "%')"
-                + " order by board_id desc")) {
+    try (PreparedStatement stmt = conFactory.getConnection().prepareStatement(
+        "select board_id, title, created_date, view_cnt"
+            + " from app_board"
+            + " where title like(?)"
+            + " or content like(?)"
+            + " order by board_id desc")) {
 
-      ArrayList<Board> list = new ArrayList<>();
-      while (rs.next()) {
-        Board b = new Board();
-        b.setNo(rs.getInt("board_id"));
-        b.setTitle(rs.getString("title"));
-        b.setCreatedDate(rs.getString("created_date"));
-        b.setViewCount(rs.getInt("view_cnt"));
+      stmt.setString(1, "%" + keyword + "%");
+      stmt.setString(2, "%" + keyword + "%");
 
-        list.add(b);
+
+      try (ResultSet rs = stmt.executeQuery()) {
+        ArrayList<Board> list = new ArrayList<>();
+        while (rs.next()) {
+          Board b = new Board();
+          b.setNo(rs.getInt("board_id"));
+          b.setTitle(rs.getString("title"));
+          //b.setCreatedDate(rs.getString("created_date"));
+          b.setViewCount(rs.getInt("view_cnt"));
+
+          list.add(b);
+        }
+        return list;
       }
-      return list;
 
     } catch (Exception e) {
       throw new DaoException(e);
@@ -125,11 +112,20 @@ public class BoardDaoImpl implements BoardDao {
 
   @Override
   public int update(Board b) {
-    try (Statement stmt = con.createStatement()) {
+    try (PreparedStatement stmt = conFactory.getConnection().prepareStatement(
+        "update app_board set title=?, content=? where board_id=%?")) {
 
+      // 미리 준비한 SQL에 값만 별도록 설정한다.
+      // 이때 문자열 안에 들어 있는 '(작은 따옴표)는 일반 문자로 간주한다.
+      // 따라서 DQL 삽입 공격이 불가능 하다.
+      stmt.setString(1, b.getTitle());
+      stmt.setString(2, b.getContent());
+      stmt.setInt(3, b.getNo());
       String sql = String.format("update app_board set title='%s', content='%s' where board_id=%d",
           b.getTitle(), b.getContent(), b.getNo());
-
+      /*
+update app_board set title='xxx', content='hul', view_cnt=20000, created_date='2024-05-05', pwd='d' where board_id=5
+       */
       return stmt.executeUpdate(sql);
 
     } catch (Exception e) {
@@ -139,11 +135,12 @@ public class BoardDaoImpl implements BoardDao {
 
   @Override
   public int delete(int no) {
-    try (Statement stmt = con.createStatement()) {
+    try (PreparedStatement stmt = conFactory.getConnection().prepareStatement(
+        "delete from app_board where board_id=%?")) {
 
-      String sql = String.format("delete from app_board where board_id=%d", no);
+      stmt.setInt(1, no);
 
-      return stmt.executeUpdate(sql);
+      return stmt.executeUpdate();
 
     } catch (Exception e) {
       throw new DaoException(e);
