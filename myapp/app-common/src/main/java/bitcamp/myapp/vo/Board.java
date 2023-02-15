@@ -13,7 +13,6 @@ public class Board implements java.io.Serializable {
   private Date createdDate;
   private int viewCount;
 
-
   @Override
   public String toString() {
     return "Board [no=" + no + ", title=" + title + ", content=" + content + ", password="
