@@ -2,21 +2,9 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="TeacherDao">
+<mapper namespace="TeacherMapper">
 
-  <resultMap type="teacher" id="teacherMap">
-    <id column="member_id" property="no"/>
-    <result column="name" property="name"/>
-    <result column="email" property="email"/>
-    <result column="tel" property="tel"/>
-    <result column="created_date" property="createdDate"/>
-    <result column="degree" property="degree"/>
-    <result column="school" property="school"/>
-    <result column="major" property="major"/>
-    <result column="wage" property="wage"/>
-  </resultMap>
-  
-  <insert id="insert" parameterType="teacher" >
+  <insert id="insert" parameterType="bitcamp.myapp.vo.Teacher" >
     insert into app_teacher(
       member_id,
       degree,
@@ -26,9 +14,9 @@
     values(#{no},#{degree},#{school},#{major},#{wage})
   </insert>
 
-  <select id="findAll" resultMap="teacherMap">
+  <select id="findAll" resultType="bitcamp.myapp.vo.Teacher">
     select
-      m.member_id,
+      m.member_id as no,
       m.name,
       m.tel,
       t.degree,
@@ -41,13 +29,13 @@
       m.name asc
   </select>
 
-  <select id="findByNo" parameterType="int" resultMap="teacherMap">
+  <select id="findByNo" parameterType="int" resultType="bitcamp.myapp.vo.Teacher">
     select
-      m.member_id,
+      m.member_id as no,
       m.name,
       m.email,
       m.tel,
-      m.created_date,
+      m.created_date as createdDate,
       t.degree,
       t.school,
       t.major,
@@ -58,7 +46,7 @@
     where m.member_id=#{no}
   </select>
   
-  <update id="update" parameterType="teacher">
+  <update id="update" parameterType="bitcamp.myapp.vo.Teacher">
     update app_teacher set
       degree=#{degree},
       school=#{school},

@@ -29,7 +29,6 @@ public class Exam0140 {
       System.out.printf("=> %s\n", type.getName());
     }
   }
-
 }
 
 

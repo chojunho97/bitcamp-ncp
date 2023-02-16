@@ -25,7 +25,7 @@ public class Exam0110 {
     System.out.println("------------------------------------------");
 
     //2) 중첩 클래스
-    Class<?> clazz2 = Class.forName("com.eomcs.reflect.ex02.Exam01$A");
+    Class<?> clazz2 = Class.forName("com.eomcs.reflect.ex02.Exam0110$A");
 
     // 클래스의 타입 객체를 통해 클래스 정보를 추출할 수 있다.
     System.out.println(clazz2.getSimpleName()); // A
