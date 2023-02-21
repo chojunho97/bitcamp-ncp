@@ -1,17 +1,6 @@
-<%@page import="bitcamp.myapp.vo.Board"%>
-<%@page import="java.util.List"%>
-<%@page import="bitcamp.myapp.dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%!
-private BoardDao boardDao;
-
-  @Override
-  public void init() {
-    ServletContext ctx = getServletContext();
-    boardDao = (BoardDao) ctx.getAttribute("boardDao");
-  }
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,37 +8,29 @@ private BoardDao boardDao;
 <title>비트캠프 - NCP 1기</title>
 </head>
 <body>
-<h1>게시판(JSP)</h1>
+<h1>게시판(JSP + MVC2 + EL + JSTL)</h1>
 
-<div><a href='form.jsp'>새 글</a></div>
+<div><a href='form'>새 글</a></div>
 
 <table border='1'>
 <tr>
   <th>번호</th> <th>제목</th> <th>작성일</th> <th>조회수</th>
 </tr>
-<% 
-    String keyword = request.getParameter("keyword");
 
-    List<Board> boards = null;
+<c:forEach items="${boards}" var="b">
+  <tr>
+     <td>${b.no}</td> 
+     <td><a href='view?no=${b.no}'>${b.title}</a></td> 
+     <td>${b.createdDate}</td> 
+     <td>${b.viewCount}</td>
+  </tr>
+</c:forEach>
 
-    boards = this.boardDao.findAll(keyword);
-
-    for (Board b : boards) {
-%>
-<tr>
-<td><%=b.getNo()%></td>
-<td><a href='view.jsp?no=<%=b.getNo()%>'><%=b.getTitle()%></a></td>
-<td><%=b.getCreatedDate()%></td>
-<td><%=b.getViewCount()%></td>
-</tr>
-<%   
-    }
-%>
 </table>
 
-<form action='list.jsp' method='get'>
-<input type='text' name='keyword' value='<%=keyword != null ? keyword : ""%>'>
-<button>검색</button>
+<form action='list' method='get'>
+  <input type='text' name='keyword' value='${param.keyword }'>
+  <button>검색</button>
 </form>
 
 </body>
