@@ -247,6 +247,16 @@
   - 게시글 작성자만 자신의 게시글을 변경, 삭제할 수 있게 만드는 방법
 
 ### 50. 파일을 업로드하기: multipart/form-data MIME 타입 다루기
+  - ddl4.sql 실행: app_board_file 테이블 생성
   - multipart/form-data 형식으로 파일을 업로드 하는 방법
   - apache commons-fileupload 라이브러리 사용법 
   - Servlet에서 제공하는 API(3.0부터 추가됨)를 사용하여 파일 업로드를 처리하는 방법
+
+### 51-1. Controller에서 비즈니스 로직 분리하기: 서비스 컴포넌트 도입
+  - Controller에서 비즈니스 로직을 분리하는 이유 
+  - 서비스 컴포넌트의 역할 이해
+### 51-2. 서비스 객체에 인터페이스 적용하기: 서비스 객체를 교체하기 쉽게 만들기
+  - 서비스 객체에 인터페이스를 적용하는 이유와 방법
+
+### 52. Front Controller 디자인 패턴 도입하기
+  - Front Controller 디자인 패턴의 효과 및 적용 방법
