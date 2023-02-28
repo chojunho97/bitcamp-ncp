@@ -3,45 +3,40 @@ package bitcamp.myapp.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import bitcamp.myapp.service.BoardService;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.BoardFile;
 import bitcamp.myapp.vo.Member;
 
 @Controller
-@RequestMapping("/board")
 public class BoardController {
 
-  // ServletContext 는 필드로만 주입 받을 수 있다
-  // 요청 핸들러의 파라미터로 주입 받을 수 없다.
   @Autowired private BoardService boardService;
-  @Autowired private ServletContext servletContext;
-  @GetMapping("form")
+
+  @RequestMapping("/board/form")
   public String form() {
     return "/board/form.jsp";
   }
 
-  @PostMapping("insert")
+  @RequestMapping("/board/insert")
   public String insert(
-      Board board,
-      String title,
-      String content,
-      Part[] files,
-      Model model, // ServletRequest 보관소에 저장할 값을 담는 임시 저장소
-      // 이 객체에 값을 담아 두면 프론트 컨트롤러(DispatcherServlet)가
-      // ServletRequest 보관소로 옮겨 담을 것이다.
+      @RequestParam("title") String title,
+      @RequestParam("content") String content,
+      @RequestParam("files") Part[] files,
+      HttpServletRequest request,
       HttpSession session) {
     try {
+      Board board = new Board();
+      board.setTitle(title);
+      board.setContent(content);
+
       Member loginUser = (Member) session.getAttribute("loginUser");
       Member writer = new Member();
       writer.setNo(loginUser.getNo());
@@ -54,7 +49,7 @@ public class BoardController {
         }
 
         String filename = UUID.randomUUID().toString();
-        part.write(servletContext.getRealPath("/board/upload/" + filename));
+        part.write(request.getServletContext().getRealPath("/board/upload/" + filename));
 
         BoardFile boardFile = new BoardFile();
         boardFile.setOriginalFilename(part.getSubmittedFileName());
@@ -68,40 +63,44 @@ public class BoardController {
 
     } catch (Exception e) {
       e.printStackTrace();
-      model.addAttribute("error", "data");
+      request.setAttribute("error", "data");
     }
-    return "/insert.jsp";
+    return "/board/insert.jsp";
   }
 
-  @GetMapping("list")
+  @RequestMapping("/board/list")
   public String list(
-      String keyword,
-      Model model) {
+      @RequestParam("keyword") String keyword,
+      HttpServletRequest request) {
 
-    model.addAttribute("boards", boardService.list(keyword));
+    request.setAttribute("boards", boardService.list(keyword));
     return "/board/list.jsp";
   }
 
-  @GetMapping("view")
+  @RequestMapping("/board/view")
   public String view(
-      int no, Model model) {
+      @RequestParam("no") int no,
+      HttpServletRequest request) {
 
-    model.addAttribute("board", boardService.get(no));
+    request.setAttribute("board", boardService.get(no));
     return"/board/view.jsp";
   }
 
-  @PostMapping("update")
+  @RequestMapping("/board/update")
   public String update(
-      Board board,
-      int no,
-      String title,
-      String content,
-      Part[] files,
-      Model model,
+      @RequestParam("no") int no,
+      @RequestParam("title") String title,
+      @RequestParam("content") String content,
+      @RequestParam("files") Part[] files,
       HttpServletRequest request,
       HttpSession session) {
     try {
       Member loginUser = (Member) session.getAttribute("loginUser");
+
+      Board board = new Board();
+      board.setNo(no);
+      board.setTitle(title);
+      board.setContent(content);
 
       Board old = boardService.get(board.getNo());
       if (old.getWriter().getNo() != loginUser.getNo()) {
@@ -130,37 +129,37 @@ public class BoardController {
 
     }  catch (Exception e) {
       e.printStackTrace();
-      model.addAttribute("error", "data");
+      request.setAttribute("error", "data");
     }
 
     return "/board/update.jsp";
   }
 
-  @PostMapping("delete")
+  @RequestMapping("/board/delete")
   public String delete(
-      int no,
-      Model model,
+      @RequestParam("no") int boardNo,
+      HttpServletRequest request,
       HttpSession session) {
     try {
       Member loginUser = (Member) session.getAttribute("loginUser");
 
-      Board old = boardService.get(no);
+      Board old = boardService.get(boardNo);
       if (old.getWriter().getNo() != loginUser.getNo()) {
         return "redirect:../auth/fail";
       }
-      boardService.delete(no);
+      boardService.delete(boardNo);
 
     }  catch (Exception e) {
       e.printStackTrace();
-      model.addAttribute("error", "data");
+      request.setAttribute("error", "data");
     }
     return "/board/delete.jsp";
   }
 
-  @GetMapping("filedelete")
+  @RequestMapping("/board/filedelete")
   public String filedelete(
-      int boardNo,
-      int fileNo,
+      @RequestParam("boardNo") int boardNo,
+      @RequestParam("fileNo") int fileNo,
       HttpSession session) {
 
     Member loginUser = (Member) session.getAttribute("loginUser");
@@ -173,6 +172,7 @@ public class BoardController {
       return "redirect:view?no=" + boardNo;
     }
   }
+
 }
 
 

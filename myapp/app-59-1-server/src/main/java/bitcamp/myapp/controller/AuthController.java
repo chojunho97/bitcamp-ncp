@@ -56,7 +56,7 @@ public class AuthController {
 
     if (member != null) {
       session.setAttribute("loginUser", member);
-      return "redirect:../../";
+      return "redirect:../";
     } else {
       request.setAttribute("error", "loginfail");
       return "/auth/form.jsp";
