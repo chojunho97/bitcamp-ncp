@@ -282,13 +282,37 @@
 ### 58. 요청 핸들러의 파라미터 값 자동으로 주입하기: 애노테이션 활용
   - 요청 핸들러의 파라미터를 분석하여 호출에 필요한 아규먼트를 자동으로 주입한다.
 
-### 59-1. Spring IoC 컨테이너 도입하기: 객체 생성 자동화
+### 59. Spring IoC 컨테이너 도입하기: 객체 생성 자동화
   - Spring IoC 컨테이너를 사용하여 객체를 자동으로 생성하는 방법
   - @Autowired를 사용하여 의존 객체를 자동으로 주입하는 방법
   - Java Config를 사용하여 설정하는 방법
   - @Bean 을 이용하여 메서드 리턴 값을 컨테이너에 보관하는 방법
   - @ComponentScan 을 이용하여 IoC 컨테이너가 관리할 패키지 영역을 지정하는 방법
 
-### 59-2. Spring WebMVC 프론트 컨트롤러 도입하기
+### 60-1. Spring WebMVC 프론트 컨트롤러 도입하기
   - Spring WebMVC 프레임워크에서 제공하는 DispatcherServlet 사용법
+  - Spring WebMVC에서 mutipart/form-data 요청 처리를 설정하는 방법
+  - Mybatis와 Spring IoC 컨테이너를 연동하는 방법
+  - 트랜잭션을 다루는 방법(자바 코드로 직접 제어)
+
+### 60-2. Spring WebMVC 프론트 컨트롤러 도입하기
+  - 트랜잭션을 다루는 방법(애노테이션으로 제어)
+  - @PropertySource와 @Value 사용법
+  - 프론트 컨트롤러를 등록하는 방법
+    - SevletContextListener 를 이용하여 등록
+    - WebApplicationInitializer 를 이용하여 등록
+    - AbstractDispatcherServletInitializer 를 이용하여 등록
+    - AbstractAnnotationConfigDispatcherServletInitializer 를 이용하여 등록
+  - 필터를 삽입하는 방법
+  - JSP 파일의 위치를 변경하는 이유와 방법: InternalResourceViewResolver 사용법
+  - Spring WebMVC의 MultipartFile 클래스 사용법
+
+### 60-3. Spring WebMVC 프론트 컨트롤러 도입하기
+  - 공용 객체와 웹 관련 객체를 구분해 관리하는 방법: Root vs Servlet WebApplicationContext
+  - 로그인 여부를 필터 대신 인터셉터로 처리하는 방법
+
+### 61. Tiles 뷰 기술을 적용하기
+  - JSP에 Tiles 뷰 기술을 적용하여 UI 템플릿을 다루는 방법
   
+### 62. Thymleaf 뷰 기술 사용하기
+  - JSP 대신에 Thymleaf 뷰 기술을 사용하는 방법
