@@ -2,6 +2,8 @@ package bitcamp.myapp.vo;
 
 import java.sql.Date;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 public class Member implements java.io.Serializable {
   private static final long serialVersionUID = 1L;
@@ -11,6 +13,10 @@ public class Member implements java.io.Serializable {
   private String email;
   private String password;
   private String tel;
+
+  @JsonFormat(
+      shape = Shape.STRING,
+      pattern = "yyyy-MM-dd")
   private Date createdDate;
 
 

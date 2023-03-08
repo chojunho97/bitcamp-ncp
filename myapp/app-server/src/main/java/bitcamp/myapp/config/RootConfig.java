@@ -2,6 +2,8 @@ package bitcamp.myapp.config;
 
 import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +18,10 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 
 @ComponentScan(
@@ -30,8 +36,10 @@ import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 @EnableTransactionManagement
 public class RootConfig {
 
+  Logger log = LogManager.getLogger(getClass());
+
   {
-    System.out.println("RootConfig 생성됨!");
+    log.trace("RootConfig 생성됨!");
   }
 
   @Bean
@@ -40,6 +48,7 @@ public class RootConfig {
       @Value("${jdbc.url}") String url,
       @Value("${jdbc.username}") String username,
       @Value("${jdbc.password}") String password) {
+    log.trace("DataSource 생성됨!");
     DriverManagerDataSource ds = new DriverManagerDataSource();
     ds.setDriverClassName(jdbcDriver);
     ds.setUrl(url);
@@ -50,13 +59,13 @@ public class RootConfig {
 
   @Bean
   public PlatformTransactionManager transactionManager(DataSource dataSource) throws Exception {
-    System.out.println("PlatformTransactionManager 객체 생성! ");
+    log.trace("PlatformTransactionManager 객체 생성!");
     return new DataSourceTransactionManager(dataSource);
   }
 
   @Bean
   public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ApplicationContext appCtx) throws Exception {
-    System.out.println("SqlSessionFactory 객체 생성!");
+    log.trace("sqlSessionFactory 생성됨!");
     SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
     factoryBean.setDataSource(dataSource);
     factoryBean.setTypeAliasesPackage("bitcamp.myapp.vo");
@@ -70,6 +79,28 @@ public class RootConfig {
     configurer.setDefinitions("/WEB-INF/defs/app-tiles.xml", "/WEB-INF/defs/admin-tiles.xml");
     return configurer;
   }
+
+  // Thymeleaf 템플릿에 관한 정보를 설정한다.
+  @Bean
+  public SpringResourceTemplateResolver templateResolver(ApplicationContext applicationContext){
+    SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+    templateResolver.setApplicationContext(applicationContext);
+    templateResolver.setPrefix("/WEB-INF/thymeleaf/");
+    templateResolver.setSuffix(".html");
+    templateResolver.setTemplateMode(TemplateMode.HTML);
+    templateResolver.setCacheable(false);
+    return templateResolver;
+  }
+
+  // Thymeleaf 템플릿을 실행할 엔진을 만든다.
+  @Bean
+  public SpringTemplateEngine templateEngine(ITemplateResolver templateResolver){
+    SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+    templateEngine.setTemplateResolver(templateResolver);
+    templateEngine.setEnableSpringELCompiler(true);
+    return templateEngine;
+  }
+
 }
 
 
