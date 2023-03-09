@@ -25,32 +25,46 @@
 
 <script>
 fetch("../app/board/list")
-.then((response) => {
-	return response.json();
-	// json()은 promise 객체를 리턴한다.
-	// Promise 객체가 하는 일 :
-	//   - 서버에서 응답 콘텐트를 받는 일을 한다.
-	//   - 서버에서 받은 JSON 포맷의 문자열을 JavaScript 객체로 변환한다.
-	//   - resolve()를 호출하며 다음 Promise 객체에 작업이 완료됐음을 통지한다.
-	//   - 이 때 변환된 JavaScript를 객체를 파라미터로 전달한다.
+.then(response => {
+  return response.json();
+  // json()은 Promise 객체를 리턴한다.
+  // Promise 객체가 하는 일:
+  //   - 서버에서 응답 콘텐트를 받는 일을 한다.
+  //   - 서버에서 받은 JSON 포맷의 문자열을 JavaScript 객체로 변환한다.
+  //   - resolve()를 호출하여 다음 Promise 객체에 작업이 완료됐음을 통지한다.
+  //     이때 변환된 JavaScript를 객체를 파라미터로 전달한다.
 })
-.then((boards) => {
-	let tbody = "";
-	boards.forEach(board => {
-		let html = `
-			<tr>
-		     <td>${board.no}</td> 
-		     <td><a href='view.html?no=${board.no}'>${board.title == "" ? "제목없음" : board.title}</a></td> 
-		     <td>${board.writer.name}</td>
-		     <td>${board.createdDate}</td> 
-		     <td>${board.viewCount}</td>
-		  </tr>
-		  `;
-		  tbody += html;
-	  });
-	document.querySelector("#board-table > tbody").innerHTML = tbody;
+.then(result => {
+  let tbody = "";
+  result.data.forEach(board => {
+    let html = `
+  	  <tr>
+  	     <td>${board.no}</td> 
+  	     <td><a href='view.html?no=${board.no}'>${board.title == "" ? "제목없음" : board.title}</a></td> 
+  	     <td>${board.writer.name}</td>
+  	     <td>${board.createdDate}</td> 
+  	     <td>${board.viewCount}</td>
+  	  </tr>
+  	`;
+  	tbody += html;
+  });
+  document.querySelector("#board-table > tbody").innerHTML = tbody;
 });
 </script>
-
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

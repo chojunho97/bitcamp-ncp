@@ -8,9 +8,8 @@
 <h1>게시판</h1>
 
 <div>
-  <form id='board-form'  method='post' enctype="multipart/form-data">
+  <form id='board-form' method='post' enctype="multipart/form-data">
   <table border='1'>
- 
   <tr>
     <th>제목</th>
     <td><input type='text' name='title'></td>
@@ -26,8 +25,9 @@
     </td>
   </tr>
   </table>
+  
   <div>
-    <button id='btn-insert' type='button'>등록</button>
+    <button id="btn-insert" type="button">등록</button>
     <button id='btn-cancel' type='button'>취소</button>
   </div>
   </form>
@@ -35,33 +35,36 @@
 
 
 <script>
-
 document.querySelector('#btn-insert').onclick = function() {
   const form = document.querySelector('#board-form');
   const formData = new FormData(form);
   
   fetch("../app/board/insert", {
-	  method: "post",
-	  body: formData
+    method: "post",
+    body: formData
   })
   .then(response => {
-	  return response.json();
+    return response.json();
   })
   .then(result => {
-	  if (result.status == "success") {
-		  location.href = 'list.html';
-	  } else {
-		  alert('입력 실패');
-		  return;
-	  }
+    if (result.status == 'success') {
+      location.href = 'list.html';
+    } else {
+      alert('입력 실패!');
+    }
+  })
+  .catch(exception => {
+	  alert("입력 오류!");
+	  console.log(exception);
   });
+  
 }
 
 document.querySelector('#btn-cancel').onclick = function() {
   location.href = 'list.html';
 }
-
 </script>
 
 </body>
 </html>
+

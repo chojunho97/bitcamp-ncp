@@ -13,13 +13,12 @@ const promise = new Promise((resolve, reject) => {
     if (xhr.readyState == 4) {
       console.log(xhr.responseText);
 
-  // #btn 태그가 없기 때문에 다음 코드는 예외를 발생시킬 것이다.
+      // #btn 태그가 없기 때문에 다음 코드는 예외를 발생시킬 것이다.
       document.getElementById("#btn").onclick = () => {};
     }
   };
   xhr.open("GET", "http://localhost:8080/web/app/hello", true); 
   xhr.send();
-
 })
 .catch(() => console.log("catched!"));
 

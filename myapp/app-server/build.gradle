@@ -98,6 +98,7 @@ dependencies {
     // Log4j 2.x 라이브러리
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
     
+    // MappingJackson2HttpMessageConverter 가 사용할 라이브러리
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
     
     // multipart/form-data 처리 라이브러리

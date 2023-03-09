@@ -11,7 +11,7 @@
 // executor의 정의를 파라미터에서 수행
 const promise = new Promise((resolve, reject) => {
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "http://localhost:3000/hello", false); 
+  xhr.open("GET", "http://localhost:8080/web/app/hello", false); 
   xhr.send();
   console.log(xhr.responseText);
 });

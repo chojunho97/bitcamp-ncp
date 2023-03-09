@@ -22,10 +22,10 @@
 // - 어떤 이유로 작업 수행을 거절(reject)했다는 통지를 받으면, 
 //   reject 상태일 때 호출하기로 약속한 함수를 실행한다.
 //
-let executor = (resolve, reject) => {
+const executor = (resolve, reject) => {
   // 시간이 오래 걸리는 동기 작업 수행
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "http://localhost:3000/hello", false); 
+  xhr.open("GET", "http://localhost:8080/web/app/hello", false); 
   xhr.send();
   console.log(xhr.responseText);
 };

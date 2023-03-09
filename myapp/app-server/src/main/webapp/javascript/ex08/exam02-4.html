@@ -19,7 +19,7 @@ const promise = new Promise((resolve, reject) => {
       reject(); // 문제가 발생하여 약속된 작업을 거절한다고 알린다.
     }
   };
-  xhr.open("GET", "http://localhost:3000/hello", true); 
+  xhr.open("GET", "http://localhost:8080/web/app/hello", true); 
   xhr.send();
 });
 

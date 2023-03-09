@@ -19,6 +19,7 @@ public class Board implements java.io.Serializable {
       shape = Shape.STRING,
       pattern = "yyyy-MM-dd")
   private Date createdDate;
+
   private int viewCount;
   private int writerNo;
   private String writerName;
