@@ -34,7 +34,6 @@ public class AuthController {
       String password,
       HttpSession session) {
 
-
     Member member = null;
     switch (usertype) {
       case "student":

@@ -9,8 +9,11 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,8 +26,14 @@ import bitcamp.util.RestResult;
 import bitcamp.util.RestStatus;
 
 @RestController
-@RequestMapping("/board")
+@RequestMapping("/boards")
 public class BoardController {
+
+  // 입력: POST   => /boards
+  // 목록: GET    => /boards
+  // 조회: GET    => /boards/{no}
+  // 변경: PUT    => /boards/{no}
+  // 삭제: DELETE => /boards/{no}
 
   Logger log = LogManager.getLogger(getClass());
 
@@ -35,7 +44,7 @@ public class BoardController {
   @Autowired private ServletContext servletContext;
   @Autowired private BoardService boardService;
 
-  @PostMapping("insert")
+  @PostMapping
   public Object insert(
       Board board,
       List<MultipartFile> files,
@@ -70,7 +79,7 @@ public class BoardController {
         .setStatus(RestStatus.SUCCESS);
   }
 
-  @GetMapping("list")
+  @GetMapping
   public Object list(String keyword) {
     log.debug("BoardController.list() 호출됨!");
 
@@ -83,8 +92,8 @@ public class BoardController {
         .setData(boardService.list(keyword));
   }
 
-  @GetMapping("view")
-  public Object view(int no) {
+  @GetMapping("{no}")
+  public Object view(@PathVariable int no) {
     Board board = boardService.get(no);
     if (board != null) {
       return new RestResult()
@@ -97,13 +106,18 @@ public class BoardController {
     }
   }
 
-  @PostMapping("update")
+  @PutMapping("{no}")
   public Object update(
+      @PathVariable int no,
       Board board,
       List<MultipartFile> files,
       HttpSession session) throws Exception {
 
     Member loginUser = (Member) session.getAttribute("loginUser");
+
+    // URL 의 번호와 요청 파라미터의 번호가 다를 경우를 방지하기 위해
+    // URL의 번호를 게시글 번호로 설정한다.
+    board.setNo(no);
 
     Board old = boardService.get(board.getNo());
     if (old.getWriter().getNo() != loginUser.getNo()) {
@@ -137,8 +151,8 @@ public class BoardController {
         .setStatus(RestStatus.SUCCESS);
   }
 
-  @PostMapping("delete")
-  public Object delete(int no, HttpSession session) {
+  @DeleteMapping("{no}")
+  public Object delete(@PathVariable int no, HttpSession session) {
     Member loginUser = (Member) session.getAttribute("loginUser");
 
     Board old = boardService.get(no);
@@ -154,8 +168,11 @@ public class BoardController {
         .setStatus(RestStatus.SUCCESS);
   }
 
-  @PostMapping("filedelete")
-  public Object filedelete(int boardNo, int fileNo, HttpSession session) {
+  @DeleteMapping("{boardNo}/files/{fileNo}")
+  public Object filedelete(
+      @PathVariable int boardNo,
+      @PathVariable int fileNo,
+      HttpSession session) {
     Member loginUser = (Member) session.getAttribute("loginUser");
     Board old = boardService.get(boardNo);
 

@@ -35,16 +35,15 @@
 
 <script>
 
-
 document.querySelector('input[name="email"]').value = getCookie('email');
 
 document.querySelector('#btn-login').onclick = () => {
-	// 이메일을 쿠키에 보관
-	if (document.querySelector('input[type="checkbox"]:checked') != null) {
-		setCookie('email', document.querySelector('input[name="email"]').value, 60 * 60 * 24 * 7);
-	} else {
-		setCookie('email', '', 0);
-	}
+  // 이메일을 쿠키에 보관
+  if (document.querySelector('input[type="checkbox"]:checked') != null) {
+    setCookie('email', document.querySelector('input[name="email"]').value, 60 * 60 * 24 * 7);
+  } else {
+	  setCookie('email', '', 0);
+  }
 	
   const form = document.querySelector('#login-form');
   const formData = new FormData(form);
