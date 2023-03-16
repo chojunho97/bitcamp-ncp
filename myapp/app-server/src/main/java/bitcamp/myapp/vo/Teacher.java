@@ -1,8 +1,10 @@
 package bitcamp.myapp.vo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class Teacher extends Member{
   private int degree;
   private String school;
