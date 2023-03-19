@@ -9,7 +9,7 @@ package com.eomcs.oop.ex02;
 //   리팩토링: 메서드 이동(Move Method)
 //     => 메서드를 관련된 클래스로 이동시킨다. => 코드의 이해가 쉽다.
 //5) 인스턴스 메서드: 인스턴스 주소를 받는 더 쉬운 문법
-// 
+//
 public class Exam0150 {
 
   static class Score {
