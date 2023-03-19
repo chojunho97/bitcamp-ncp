@@ -10,14 +10,12 @@ public class Exam0210 {
   }
 
   public static void main(String[] args) throws Exception {
-    Class<?> clazz = Class.forName("com.eomcs.reflect.ex02.Exam02$C");
+    Class<?> clazz = Class.forName("com.eomcs.reflect.ex02.Exam0210$C");
 
     // 수퍼 클래스의 타입을 알아내기
     Class<?> superClazz = clazz.getSuperclass();
     System.out.println(superClazz.getName());
     System.out.println(superClazz.getSuperclass().getName());
 
-
   }
-
 }

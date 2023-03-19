@@ -8,7 +8,7 @@ public class Exam0150 {
 
     // 클래스 필드 = 스태틱 필드
     // - 모든 인스턴스가 공유하는 값을 저장할 때는 클래스 변수를 사용한다.
-    static int count; 
+    static int count;
 
     // 인스턴스 필드 = 논스태틱 필드
     // - 인스턴스마다 개별적으로 관리해야 할 값은 인스턴스 변수에 저장한다.
@@ -27,7 +27,7 @@ public class Exam0150 {
     s1.age = 10;
 
     // 클래스 이름으로는 인스턴스 필드에 접근할 수 없다.
-    // A.name = "홍길동"; // 컴파일 오류!
+    // s1.name = "홍길동"; // 컴파일 오류!
 
     Student.count++;
 
@@ -48,7 +48,7 @@ public class Exam0150 {
     System.out.printf("%d, %s, %d\n", Student.count, s3.name, s3.age);
 
     // 클래스 필드에 접근할 때는 다음과 같이 레퍼런스를 통해서도 접근할 수 있다.
-    System.out.println(s1.count);
+    System.out.println(Student.count);
     System.out.println(s2.count);
     System.out.println(s3.count);
     // - 인스턴스에 count라는 변수가 없으면 클래스에서 찾는다.
