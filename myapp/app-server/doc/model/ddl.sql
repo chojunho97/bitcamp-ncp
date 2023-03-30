@@ -255,15 +255,9 @@ ALTER TABLE lms_degree
 CREATE TABLE lms_class_photo (
   class_photo_id  INTEGER      NOT NULL COMMENT '강의실사진번호', -- 강의실사진번호
   photo_path      VARCHAR(255) NOT NULL COMMENT '사진', -- 사진
-<<<<<<< HEAD
   origin_filename VARCHAR(60)  NOT NULL COMMENT '원래사진파일명', -- 원래사진파일명
   mimetype        VARCHAR(60)  NOT NULL COMMENT 'MIMETYPE', -- MIMETYPE
   class_id        INTEGER      NOT NULL COMMENT '강의실번호' -- 강의실번호
-=======
-  class_id        INTEGER      NOT NULL COMMENT '강의실번호', -- 강의실번호
-  origin_filename VARCHAR(60)  NOT NULL COMMENT '원래사진파일명', -- 원래사진파일명
-  minetype        VARCHAR(60)  NOT NULL COMMENT 'MIMETYPE' -- MIMETYPE
->>>>>>> 6a9f861f0ce4f8d28afc1d9390fb2a410417bc3a
 )
 COMMENT '강의실사진';
 
@@ -303,13 +297,8 @@ ALTER TABLE lms_addr
 
 -- 수강신청
 CREATE TABLE lms_application (
-<<<<<<< HEAD
   lecture_id           INTEGER     NOT NULL COMMENT '강의번호', -- 강의번호
   student_id           INTEGER     NOT NULL COMMENT '학생번호', -- 학생번호
-=======
-  student_id           INTEGER     NOT NULL COMMENT '학생번호', -- 학생번호
-  lecture_id           INTEGER     NOT NULL COMMENT '강의번호', -- 강의번호
->>>>>>> 6a9f861f0ce4f8d28afc1d9390fb2a410417bc3a
   created_dt           DATETIME    NOT NULL DEFAULT now() COMMENT '신청일', -- 신청일
   application_state_id VARCHAR(10) NULL     COMMENT '신청상태번호' -- 신청상태번호
 )
@@ -319,24 +308,14 @@ COMMENT '수강신청';
 ALTER TABLE lms_application
   ADD CONSTRAINT PK_lms_application -- 수강신청 기본키
   PRIMARY KEY (
-<<<<<<< HEAD
   lecture_id, -- 강의번호
   student_id  -- 학생번호
-=======
-  student_id, -- 학생번호
-  lecture_id  -- 강의번호
->>>>>>> 6a9f861f0ce4f8d28afc1d9390fb2a410417bc3a
   );
 
 -- 강의배정
 CREATE TABLE lms_lecture_teacher (
-<<<<<<< HEAD
   teacher_id INTEGER NOT NULL COMMENT '강사번호', -- 강사번호
   lecture_id INTEGER NOT NULL COMMENT '강의번호' -- 강의번호
-=======
-  lecture_id INTEGER NOT NULL COMMENT '강의번호', -- 강의번호
-  teacher_id INTEGER NOT NULL COMMENT '강사번호' -- 강사번호
->>>>>>> 6a9f861f0ce4f8d28afc1d9390fb2a410417bc3a
 )
 COMMENT '강의배정';
 
@@ -344,13 +323,8 @@ COMMENT '강의배정';
 ALTER TABLE lms_lecture_teacher
   ADD CONSTRAINT PK_lms_lecture_teacher -- 강의배정 기본키
   PRIMARY KEY (
-<<<<<<< HEAD
   teacher_id, -- 강사번호
   lecture_id  -- 강의번호
-=======
-  lecture_id, -- 강의번호
-  teacher_id  -- 강사번호
->>>>>>> 6a9f861f0ce4f8d28afc1d9390fb2a410417bc3a
   );
 
 -- 신청상태
@@ -479,7 +453,6 @@ ALTER TABLE lms_class_photo
 
 -- 수강신청
 ALTER TABLE lms_application
-<<<<<<< HEAD
   ADD CONSTRAINT FK_lms_lecture_TO_lms_application -- 강의 -> 수강신청
   FOREIGN KEY (
   lecture_id -- 강의번호
@@ -490,8 +463,6 @@ ALTER TABLE lms_application
 
 -- 수강신청
 ALTER TABLE lms_application
-=======
->>>>>>> 6a9f861f0ce4f8d28afc1d9390fb2a410417bc3a
   ADD CONSTRAINT FK_lms_student_TO_lms_application -- 학생 -> 수강신청
   FOREIGN KEY (
   student_id -- 학생번호
@@ -502,19 +473,6 @@ ALTER TABLE lms_application
 
 -- 수강신청
 ALTER TABLE lms_application
-<<<<<<< HEAD
-=======
-  ADD CONSTRAINT FK_lms_lecture_TO_lms_application -- 강의 -> 수강신청
-  FOREIGN KEY (
-  lecture_id -- 강의번호
-  )
-  REFERENCES lms_lecture ( -- 강의
-  lecture_id -- 강의번호
-  );
-
--- 수강신청
-ALTER TABLE lms_application
->>>>>>> 6a9f861f0ce4f8d28afc1d9390fb2a410417bc3a
   ADD CONSTRAINT FK_lms_application_state_TO_lms_application -- 신청상태 -> 수강신청
   FOREIGN KEY (
   application_state_id -- 신청상태번호
@@ -525,7 +483,6 @@ ALTER TABLE lms_application
 
 -- 강의배정
 ALTER TABLE lms_lecture_teacher
-<<<<<<< HEAD
   ADD CONSTRAINT FK_lms_teacher_TO_lms_lecture_teacher -- 강사 -> 강의배정
   FOREIGN KEY (
   teacher_id -- 강사번호
@@ -536,25 +493,10 @@ ALTER TABLE lms_lecture_teacher
 
 -- 강의배정
 ALTER TABLE lms_lecture_teacher
-=======
->>>>>>> 6a9f861f0ce4f8d28afc1d9390fb2a410417bc3a
   ADD CONSTRAINT FK_lms_lecture_TO_lms_lecture_teacher -- 강의 -> 강의배정
   FOREIGN KEY (
   lecture_id -- 강의번호
   )
   REFERENCES lms_lecture ( -- 강의
   lecture_id -- 강의번호
-<<<<<<< HEAD
-=======
-  );
-
--- 강의배정
-ALTER TABLE lms_lecture_teacher
-  ADD CONSTRAINT FK_lms_teacher_TO_lms_lecture_teacher -- 강사 -> 강의배정
-  FOREIGN KEY (
-  teacher_id -- 강사번호
-  )
-  REFERENCES lms_teacher ( -- 강사
-  teacher_id -- 강사번호
->>>>>>> 6a9f861f0ce4f8d28afc1d9390fb2a410417bc3a
   );
